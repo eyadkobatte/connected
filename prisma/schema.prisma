@@ -3,19 +3,36 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("DATABASE_SHADOW_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
 }
 
 model Connection {
   connectionId String @id
-  userIdOne String
-  userIdTwo String
+  userIdOne    String
+  userIdTwo    String
 }
 
 model ConnectionLink {
-  connectionId String @id
-  fromUserId String
-  createdAt DateTime @default(now())
+  connectionId String   @id
+  fromUserId   String
+  createdAt    DateTime @default(now())
+}
+
+model Prompt {
+  connectionId String
+  promptId     String     @id @unique
+  title        String
+  body         String
+  createdBy    String
+  createdAt    DateTime   @default(now())
+  Response     Response[]
+}
+
+model Response {
+  responseId String   @id
+  promptId   String
+  prompt     Prompt   @relation(fields: [promptId], references: [promptId])
+  createdBy  String
+  createdAt  DateTime @default(now())
 }

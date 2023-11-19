@@ -1,86 +1,41 @@
-import AvatarIcons from "@/app/components/avatar-icons";
-import { getConnectionById } from "@/app/domains/connection";
-import { getUsers } from "@/app/lib/users";
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-import { createQuestion } from "./actions";
+import { getPromptsWithResponseCount } from "@/app/domains/prompt";
+import Link from "next/link";
 
 export default async function RoomConnection({
   params,
 }: {
   params: { connectionId: string };
 }) {
-  const { userId } = auth();
-  if (!userId) {
-    redirect("/");
-  }
-
-  const connection = await getConnectionById(params.connectionId);
-  if (!connection) {
-    redirect("/");
-  }
-
-  const users = await getUsers(connection.userIdOne, connection.userIdTwo);
-
-  const currentUser = users.find((user) => user.id === userId);
-  const otherUser = users.find((user) => user.id !== userId);
-  if (!currentUser || !otherUser) {
-    redirect("/");
-  }
-
-  if (
-    currentUser.id !== connection.userIdOne &&
-    currentUser.id !== connection.userIdTwo
-  ) {
-    redirect("/");
-  }
-
+  const prompts = await getPromptsWithResponseCount(params.connectionId);
+  console.log(JSON.stringify(prompts));
   return (
-    <section>
-      <AvatarIcons
-        imageUrls={[currentUser.imageUrl, otherUser.imageUrl]}
-      ></AvatarIcons>
-      <br />
-      Welcome!
-      <div>
-        Setup a question!
-        <form action={createQuestion}>
-          <div>
-            <label
-              htmlFor="question"
-              className="block text-sm font-medium leading-6 text-gray-900"
+    <>
+      <h3>Questions between you</h3>
+      {prompts.map((prompt, index) => (
+        <div
+          key={index}
+          className="p-8 border-2 border-violet-900 dark:border-violet-100"
+        >
+          <Link href={`${prompt.connectionId}/${prompt.promptId}`}>
+            <h4>{prompt.title}</h4>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6 inline"
             >
-              Create a prompt
-            </label>
-            <div className="relative mt-2 rounded-md shadow-sm">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <span className="text-gray-500 sm:text-sm">$</span>
-              </div>
-              <input
-                type="text"
-                name="question"
-                id="question"
-                className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="0.00"
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
               />
-              <div className="absolute inset-y-0 right-0 flex items-center">
-                <label htmlFor="currency" className="sr-only">
-                  Currency
-                </label>
-                <select
-                  id="currency"
-                  name="currency"
-                  className="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                >
-                  <option>USD</option>
-                  <option>CAD</option>
-                  <option>EUR</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </section>
+            </svg>
+            {prompt._count.Response}
+          </Link>
+        </div>
+      ))}
+    </>
   );
 }
