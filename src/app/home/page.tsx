@@ -1,11 +1,11 @@
-import { auth, currentUser, redirectToSignIn } from "@clerk/nextjs";
-import Connections from "../connections/page";
+import { currentUser } from "@clerk/nextjs";
+import Connections from "../connections/component";
 
 export default async function Home() {
   const user = (await currentUser())!;
 
   return (
-    <section className="p-24">
+    <section>
       <div>Hi, {user.firstName}</div>
       <Connections></Connections>
     </section>
