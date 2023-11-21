@@ -17,7 +17,13 @@ export async function getPromptsWithResponseCount(connectionId: string) {
 export async function getPromptsWithResponses(promptId: string) {
   return prisma.prompt.findFirst({
     where: { promptId },
-    include: { Response: true },
+    include: {
+      Response: {
+        include: {
+          createdBy: true,
+        },
+      },
+    },
   });
 }
 

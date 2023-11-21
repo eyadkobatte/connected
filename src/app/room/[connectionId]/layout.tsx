@@ -56,31 +56,25 @@ export default async function RoomConnectionLayout({
         ></AvatarIcons>
         <br />
         Welcome!
-        <div>
-          <form action={createPromptWithContext}>
-            <div>
-              <div>Ask a question!</div>
-              <input
-                type="text"
-                name="prompt"
-                id="prompt"
-                className="p-4 my-2 border-violet-900 dark:border-violet-100 border-2 bg-violet-100 dark:bg-violet-900 outline-violet-900 dark:outline-violet-100 w-96"
-              />
-            </div>
-            <div>
-              <div>Add more details!</div>
-              <textarea
-                name="details"
-                id="details"
-                rows={4}
-                className="p-4 my-2 border-violet-900 dark:border-violet-100 border-2 bg-violet-100 dark:bg-violet-900 outline-violet-900 dark:outline-violet-100 w-96"
-              />
-            </div>
-            <div>
-              <Button>Send!</Button>
-            </div>
-          </form>
-        </div>
+        <form action={createPromptWithContext}>
+          <div>Ask a question!</div>
+          <input
+            type="text"
+            name="prompt"
+            id="prompt"
+            className="p-4 my-2 border-violet-900 dark:border-violet-100 border-2 bg-violet-100 dark:bg-violet-900 outline-violet-900 dark:outline-violet-100 w-96"
+          />
+          <div>Add more details!</div>
+          <textarea
+            name="details"
+            id="details"
+            rows={4}
+            className="p-4 my-2 border-violet-900 dark:border-violet-100 border-2 bg-violet-100 dark:bg-violet-900 outline-violet-900 dark:outline-violet-100 w-96"
+          />
+          <div>
+            <Button>Send!</Button>
+          </div>
+        </form>
       </div>
       <div className="flex-grow">{children}</div>
     </section>

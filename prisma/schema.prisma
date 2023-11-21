@@ -49,6 +49,7 @@ model Prompt {
 model Response {
   responseId  String   @id
   text        String
+  imagePaths  String
   prompt      Prompt   @relation(fields: [promptId], references: [promptId])
   promptId    String
   createdBy   User     @relation(fields: [createdById], references: [id])

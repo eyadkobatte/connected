@@ -14,7 +14,7 @@ export default async function RoomConnection({
       {prompts.map((prompt, index) => (
         <div
           key={index}
-          className="p-8 border-2 border-violet-900 dark:border-violet-100"
+          className="p-8 border-2 border-violet-900 dark:border-violet-100 my-4"
         >
           <Link href={`${prompt.connectionId}/${prompt.promptId}`}>
             <h4>{prompt.title}</h4>

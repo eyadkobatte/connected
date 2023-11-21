@@ -4,6 +4,7 @@ import { prisma } from "./_prisma";
 export async function createResponseInPrompt(
   promptId: string,
   text: string,
+  imagePaths: string,
   createdById: string
 ) {
   const responseId = randomUUID();
@@ -12,6 +13,7 @@ export async function createResponseInPrompt(
       createdById,
       responseId,
       text,
+      imagePaths,
       createdAt: new Date(),
       promptId,
     },

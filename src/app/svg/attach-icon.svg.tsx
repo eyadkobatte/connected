@@ -1,11 +1,18 @@
-export default function AttachIconSvg() {
+export default function AttachIconSvg({
+  onClick,
+  className,
+}: {
+  onClick?: () => void;
+  className?: string;
+}) {
   return (
     <svg
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="w-6 h-6 inline"
+      className={`${className} w-6 h-6 inline`}
+      onClick={onClick}
     >
       <path
         strokeLinecap="round"
