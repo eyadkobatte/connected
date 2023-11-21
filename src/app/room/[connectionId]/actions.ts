@@ -18,6 +18,6 @@ export const createPrompt = async (
 
   await createPromptInDB(prompt, details, connectionId, userId);
 
-  revalidatePath(`/room/${connectionId}`, "page");
+  revalidatePath(`/room/${connectionId}`, "layout");
   redirect(`/room/${connectionId}`);
 };

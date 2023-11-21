@@ -23,7 +23,7 @@ export default async function Connections() {
   const allUserIds = new Set(
     connections
       .map((connection) => {
-        return [connection.userIdOne, connection.userIdTwo];
+        return [connection.createdUserId, connection.acceptedUserId];
       })
       .flat(2)
   );
@@ -31,8 +31,10 @@ export default async function Connections() {
   const users = await getUsers(...allUserIds);
 
   const connectionsList = connections.map((connection, index) => {
-    const userOne = users.find((user) => user.id === connection.userIdOne)!;
-    const userTwo = users.find((user) => user.id === connection.userIdTwo)!;
+    const userOne = users.find((user) => user.id === connection.createdUserId)!;
+    const userTwo = users.find(
+      (user) => user.id === connection.acceptedUserId
+    )!;
 
     return (
       <div key={index}>

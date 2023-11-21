@@ -3,20 +3,36 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Connection {
-  connectionId String @id
-  userIdOne    String
-  userIdTwo    String
+model User {
+  id                 String           @unique
+  firstName          String
+  lastName           String
+  imageUrl           String
+  email              String
+  ConnectionLink     ConnectionLink[]
+  CreatedConnection  Connection[]     @relation(name: "created")
+  AcceptedConnection Connection[]     @relation(name: "accepted")
+  Prompt             Prompt[]
+  Response           Response[]
 }
 
 model ConnectionLink {
-  connectionId String   @id
+  connectionId String   @id @unique
+  fromUser     User     @relation(fields: [fromUserId], references: [id])
   fromUserId   String
   createdAt    DateTime @default(now())
+}
+
+model Connection {
+  connectionId   String @id @unique
+  createdUser    User   @relation(name: "created", fields: [createdUserId], references: [id])
+  createdUserId  String
+  acceptedUser   User   @relation(name: "accepted", fields: [acceptedUserId], references: [id])
+  acceptedUserId String
 }
 
 model Prompt {
@@ -24,15 +40,18 @@ model Prompt {
   promptId     String     @id @unique
   title        String
   body         String
-  createdBy    String
+  createdBy    User       @relation(fields: [createdById], references: [id])
+  createdById  String
   createdAt    DateTime   @default(now())
   Response     Response[]
 }
 
 model Response {
-  responseId String   @id
-  promptId   String
-  prompt     Prompt   @relation(fields: [promptId], references: [promptId])
-  createdBy  String
-  createdAt  DateTime @default(now())
+  responseId  String   @id
+  text        String
+  prompt      Prompt   @relation(fields: [promptId], references: [promptId])
+  promptId    String
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdById String
+  createdAt   DateTime @default(now())
 }

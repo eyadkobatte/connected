@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
-const prisma = new PrismaClient();
+import { prisma } from "./_prisma";
 
 export async function getConnectionLinksForUser(fromUserId: string) {
   return prisma.connectionLink.findMany({ where: { fromUserId }, take: 10 });

@@ -1,11 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "./_prisma";
 import { deleteConnectionLinkDB } from "./connection-link";
-
-const prisma = new PrismaClient();
 
 export async function getConnectionsForUser(userId: string) {
   return prisma.connection.findMany({
-    where: { OR: [{ userIdOne: userId }, { userIdTwo: userId }] },
+    where: { OR: [{ createdUserId: userId }, { acceptedUserId: userId }] },
   });
 }
 
@@ -17,15 +15,15 @@ export async function getConnectionById(connectionId: string) {
 
 export async function createConnectionBetweenUsers(
   connectionId: string,
-  userIdOne: string,
-  userIdTwo: string
+  createdUserId: string,
+  acceptedUserId: string
 ) {
   await deleteConnectionLinkDB(connectionId);
   return prisma.connection.create({
     data: {
       connectionId,
-      userIdOne,
-      userIdTwo,
+      createdUserId,
+      acceptedUserId,
     },
   });
 }

@@ -24,7 +24,10 @@ export default async function RoomConnectionLayout({
     redirect("/");
   }
 
-  const users = await getUsers(connection.userIdOne, connection.userIdTwo);
+  const users = await getUsers(
+    connection.createdUserId,
+    connection.acceptedUserId
+  );
 
   const currentUser = users.find((user) => user.id === userId);
   const otherUser = users.find((user) => user.id !== userId);
@@ -33,13 +36,11 @@ export default async function RoomConnectionLayout({
   }
 
   if (
-    currentUser.id !== connection.userIdOne &&
-    currentUser.id !== connection.userIdTwo
+    currentUser.id !== connection.createdUserId &&
+    currentUser.id !== connection.acceptedUserId
   ) {
     redirect("/");
   }
-
-  const prompts = await getPromptsWithResponseCount(connection.connectionId);
 
   const createPromptWithContext = createPrompt.bind(
     null,
