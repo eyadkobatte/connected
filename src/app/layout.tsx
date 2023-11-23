@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "./components/navbar";
+import Snackbar from "./components/snackbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,8 @@ export default function RootLayout({
           }
         >
           <Navbar></Navbar>
-          <section className="m-24">{children}</section>
+          <section className="m-8 lg:m-16">{children}</section>
+          <Snackbar></Snackbar>
         </body>
       </html>
     </ClerkProvider>

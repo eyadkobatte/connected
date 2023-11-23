@@ -2,7 +2,10 @@ import { randomUUID } from "crypto";
 import { prisma } from "./_prisma";
 
 export async function getConnectionLinksForUser(fromUserId: string) {
-  return prisma.connectionLink.findMany({ where: { fromUserId }, take: 10 });
+  return prisma.connectionLink.findMany({
+    where: { fromUserId },
+    take: 10,
+  });
 }
 
 export async function getConnectionLinkById(connectionId: string) {

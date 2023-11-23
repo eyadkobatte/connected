@@ -1,13 +1,17 @@
-import { currentUser } from "@clerk/nextjs";
 import Connections from "../connections/component";
+import CreateNewConnection from "../create-new-connection/component";
 
 export default async function Home() {
-  const user = (await currentUser())!;
-
   return (
-    <section>
-      <div>Hi, {user.firstName}</div>
-      <Connections></Connections>
-    </section>
+    <>
+      <div className="flex flex-col-reverse lg:flex-row-reverse justify-between gap-4">
+        <div>
+          <CreateNewConnection></CreateNewConnection>
+        </div>
+        <div>
+          <Connections></Connections>
+        </div>
+      </div>
+    </>
   );
 }

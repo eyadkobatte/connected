@@ -1,6 +1,7 @@
 import { getPromptsWithResponseCount } from "@/app/domains/prompt";
 import CommentIcon from "@/app/svg/comment-icon.svg";
 import Link from "next/link";
+import PromptHeading from "./prompt-heading";
 
 export default async function RoomConnection({
   params,
@@ -10,17 +11,9 @@ export default async function RoomConnection({
   const prompts = await getPromptsWithResponseCount(params.connectionId);
   return (
     <>
-      <h3>Questions between you</h3>
+      <h2>Conversations</h2>
       {prompts.map((prompt, index) => (
-        <div
-          key={index}
-          className="p-8 border-2 border-violet-900 dark:border-violet-100 my-4"
-        >
-          <Link href={`${prompt.connectionId}/${prompt.promptId}`}>
-            <h4>{prompt.title}</h4>
-            <CommentIcon></CommentIcon> {prompt._count.Response}
-          </Link>
-        </div>
+        <PromptHeading prompt={prompt} key={index}></PromptHeading>
       ))}
     </>
   );

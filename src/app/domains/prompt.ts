@@ -9,7 +9,7 @@ export async function getPromptsWithResponseCount(connectionId: string) {
     orderBy: {
       createdAt: "desc",
     },
-    include: { _count: true },
+    include: { _count: true, createdBy: true },
     take: 10,
   });
 }

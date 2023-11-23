@@ -4,7 +4,7 @@ export default function AvatarIcons(params: { imageUrls: string[] }) {
   const { imageUrls } = params;
 
   return (
-    <div className="flex -space-x-1">
+    <div className="inline-flex -space-x-1">
       {imageUrls.map((imageUrl, index) => (
         <Image
           key={index}
