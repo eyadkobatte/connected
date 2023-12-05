@@ -19,11 +19,11 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html className="min-h-full" lang="en">
         <body
           className={
             inter.className +
-            "bg-white dark:bg-black text-violet-900 dark:text-violet-100"
+            " min-h-full bg-white dark:bg-black text-violet-900 dark:text-violet-100"
           }
         >
           <Navbar></Navbar>

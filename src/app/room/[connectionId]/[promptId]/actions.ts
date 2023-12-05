@@ -13,17 +13,19 @@ export async function createResponse(
   const text = formData.get("text")?.toString() || "";
   const files = formData.getAll("file") as File[];
 
-  if (!text || files.length === 0) {
+  if (!text && files.length === 0) {
     return;
   }
 
   const imagePaths = await Promise.all(
-    files.map((file) => {
-      const fileExt = file.name.split(".").pop();
-      const filePath = `${randomUUID()}-${Math.random()}.${fileExt}`;
+    files
+      .filter((file) => file.size > 0)
+      .map((file) => {
+        const fileExt = file.name.split(".").pop();
+        const filePath = `${randomUUID()}-${Math.random()}.${fileExt}`;
 
-      return uploadFileToBucket(filePath, file);
-    })
+        return uploadFileToBucket(filePath, file);
+      })
   );
 
   await createResponseInPrompt(promptId, text, imagePaths.join(","), createdBy);

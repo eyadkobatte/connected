@@ -2,7 +2,7 @@
 import Button from "@/app/components/button";
 import AttachIcon from "@/app/svg/attach-icon.svg";
 import { createResponse } from "./actions";
-import React, { ChangeEventHandler, useState } from "react";
+import { useState, createRef } from "react";
 import Image from "next/image";
 
 export default function ResponseComment({
@@ -13,7 +13,7 @@ export default function ResponseComment({
   userId: string;
 }) {
   const createResponseWithContext = createResponse.bind(null, promptId, userId);
-  const fileInput = React.createRef<HTMLInputElement>();
+  const fileInput = createRef<HTMLInputElement>();
 
   const [images, setImages] = useState<File[]>([]);
   const [thumbnails, setThumbnails] = useState<string[]>([]);
@@ -48,13 +48,13 @@ export default function ResponseComment({
   };
 
   return (
-    <form action={createResponseWithContext}>
+    <form className="sticky bottom-0" action={createResponseWithContext}>
       <div className="mt-8 relative">
         <textarea
           name="text"
           id="text"
           rows={4}
-          className="p-4 pt-12 border-violet-900 dark:border-violet-100 border-2 bg-violet-100 dark:bg-violet-900 outline-violet-900 dark:outline-violet-100 w-full"
+          className="p-4 pt-12 border-0 border-b-2 border-violet-500 dark:border-violet-100 focus:ring-0 focus:border-black dark:focus:border-violet-500 bg-transparent"
         />
         <div className="absolute top-4 right-0 w-full h-8">
           <input

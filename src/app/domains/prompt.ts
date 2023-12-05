@@ -1,7 +1,10 @@
 import { randomUUID } from "crypto";
 import { prisma } from "./_prisma";
 
-export async function getPromptsWithResponseCount(connectionId: string) {
+export async function getPromptsWithResponseMetadata(
+  connectionId: string,
+  currentUserId: string
+) {
   return prisma.prompt.findMany({
     where: {
       connectionId,
@@ -9,7 +12,16 @@ export async function getPromptsWithResponseCount(connectionId: string) {
     orderBy: {
       createdAt: "desc",
     },
-    include: { _count: true, createdBy: true },
+    include: {
+      _count: {
+        select: {
+          Response: {
+            where: { createdById: currentUserId },
+          },
+        },
+      },
+      createdBy: true,
+    },
     take: 10,
   });
 }

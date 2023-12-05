@@ -2,14 +2,24 @@ import CommentIcon from "@/app/svg/comment-icon.svg";
 import Link from "next/link";
 import { formatRelative } from "date-fns";
 
-import { getPromptsWithResponseCount } from "../../domains/prompt";
+import { getPromptsWithResponseMetadata } from "../../domains/prompt";
 
 export default function PromptHeading({
   prompt,
 }: {
-  prompt: Awaited<ReturnType<typeof getPromptsWithResponseCount>>[number];
+  prompt: Awaited<ReturnType<typeof getPromptsWithResponseMetadata>>[number];
 }) {
   const createdAt = formatRelative(prompt.createdAt, new Date());
+
+  let commentCountRow = (
+    <>
+      <CommentIcon></CommentIcon> {prompt._count.Response}
+    </>
+  );
+
+  if (prompt._count.Response === 0) {
+    commentCountRow = <>Awaiting your response...</>;
+  }
 
   return (
     <Link
@@ -22,9 +32,7 @@ export default function PromptHeading({
       <div className="row flex flex-row font-light text-sm">
         Asked by {prompt.createdBy.firstName} {createdAt}
       </div>
-      <div className="row  font-light text-xs">
-        <CommentIcon></CommentIcon> {prompt._count.Response}
-      </div>
+      <div className="row  font-light text-xs">{commentCountRow}</div>
     </Link>
   );
 }
