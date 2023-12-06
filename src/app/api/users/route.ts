@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   switch (payload.type) {
     case "user.created":
     case "user.updated":
-      handleUserEvent(payload, headersList);
+      await handleUserEvent(payload, headersList);
       break;
     default:
       console.log("Received webhook for user", payload);
