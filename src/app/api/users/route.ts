@@ -62,5 +62,6 @@ async function handleUserEvent(payload: WebhookEvent, headers: Headers) {
         (email) => email.id === primary_email_address_id
       )?.email_address || payload.data.email_addresses[0].email_address;
     await createUserInDB(id, first_name, last_name, image_url, emailAddress);
+    console.log("User created in DB", first_name, id);
   }
 }
