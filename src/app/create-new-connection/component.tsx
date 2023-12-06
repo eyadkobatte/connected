@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getConnectionLinksForUser } from "../domains/connection-link";
 import { createConnectionLink } from "./actions";
 import CopyableText from "../components/copyable-text";
+import Button from "../components/button";
 
 export default async function CreateNewConnection() {
   const { userId } = auth();
@@ -25,8 +26,8 @@ export default async function CreateNewConnection() {
 
   return (
     <>
-      <form className="mt-8 mb-4" action={createConnectionLink}>
-        <button role="submit">+ Create New Connection</button>
+      <form className="my-4" action={createConnectionLink}>
+        <Button>Create New Connection</Button>
         <input type="hidden" name="userId" value={userId} />
       </form>
 
